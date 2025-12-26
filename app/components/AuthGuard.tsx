@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { auth } from "../../firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
@@ -13,7 +12,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser) {
-        router.replace("/login"); // 🔥 Redirect if NOT logged in
+        router.replace("/login"); 
       } else {
         setUser(currentUser);
       }
