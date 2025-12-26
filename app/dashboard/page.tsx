@@ -16,7 +16,7 @@ export default function DashboardPage() {
   const [tests, setTests] = useState<any[]>([]);
   const [reports, setReports] = useState<any[]>([]);
 
-  // ---------------- USER PROFILE DATA ----------------
+
   useEffect(() => {
     if (auth.currentUser) {
       setUserData({
@@ -27,7 +27,6 @@ export default function DashboardPage() {
     }
   }, []);
 
-  // ---------------- TEST HISTORY ----------------
   useEffect(() => {
     async function loadTests() {
       if (!auth.currentUser) return;
@@ -49,7 +48,7 @@ export default function DashboardPage() {
 
     loadTests();
   }, []);
-  // ---------------- REPORT HISTORY ----------------
+
   useEffect(() => {
     async function loadReports() {
       if (!auth.currentUser) return;
@@ -82,7 +81,7 @@ export default function DashboardPage() {
             User Dashboard
           </h1>
 
-          {/* ---------------- PROFILE ---------------- */}
+           
           <div className="bg-slate-800 p-4 rounded-lg mb-6 border border-slate-700">
             <h2 className="text-xl font-semibold mb-2">Profile</h2>
 
@@ -97,7 +96,7 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {/* ---------------- REPORTS SECTION ---------------- */}
+       
           <div className="bg-slate-800 p-4 rounded-lg mb-6 border border-slate-700">
             <h2 className="text-xl font-semibold mb-2">My Reports</h2>
 
@@ -115,7 +114,7 @@ export default function DashboardPage() {
 
                     <div className="mt-3 flex gap-3">
 
-                      {/* VIEW REPORT */}
+                  
                       <button
                         onClick={() => window.open(`/view-report?id=${r.id}`, "_blank")}
                         className="bg-blue-600 px-3 py-1 rounded text-sm"
@@ -123,7 +122,6 @@ export default function DashboardPage() {
                         View
                       </button>
 
-                      {/* DOWNLOAD PDF */}
                       <button
                         onClick={() => window.open(`/api/download-pdf?id=${r.id}`)}
                         className="bg-green-600 px-3 py-1 rounded text-sm"
@@ -139,7 +137,6 @@ export default function DashboardPage() {
           </div>
 
 
-          {/* ---------------- TEST HISTORY ---------------- */}
           <div className="bg-slate-800 p-4 rounded-lg mb-6 border border-slate-700">
             <h2 className="text-xl font-semibold mb-2">My Career Tests</h2>
 
@@ -160,7 +157,6 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {/* ---------------- PAYMENT HISTORY ---------------- */}
           <div className="bg-slate-800 p-4 rounded-lg border border-slate-700">
             <h2 className="text-xl font-semibold mb-2">Payments</h2>
             <p className="text-slate-400">Payment history will display after Razorpay setup.</p>
