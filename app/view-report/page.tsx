@@ -22,7 +22,7 @@ export default function ViewReportPage() {
   }
 
   async function load() {
-    const snap = await getDoc(doc(db, "reports", String(id))); // FIXED
+    const snap = await getDoc(doc(db, "reports", String(id))); 
 
     if (snap.exists()) {
       const data = snap.data();
@@ -45,14 +45,12 @@ export default function ViewReportPage() {
   return (
     <div className="min-h-screen bg-[#020617] text-white relative overflow-hidden">
 
-      {/* Neon Glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute w-[500px] h-[500px] bg-[#9333ea] opacity-20 blur-[160px] -top-40 -left-32"></div>
         <div className="absolute w-[400px] h-[400px] bg-[#06b6d4] opacity-20 blur-[150px] bottom-10 right-0"></div>
         <div className="absolute w-[300px] h-[300px] bg-[#f472b6] opacity-10 blur-[130px] top-1/2 left-1/2 -translate-x-1/2"></div>
       </div>
 
-      {/* Header */}
       <div className="relative bg-gradient-to-r from-[#6d28d9] to-[#0ea5e9] p-10 shadow-xl">
         <h1 className="text-3xl font-extrabold tracking-wide drop-shadow-lg">
           CareerAI — Detailed Career Report
@@ -62,10 +60,8 @@ export default function ViewReportPage() {
         </p>
       </div>
 
-      {/* Main Content Card */}
       <div className="relative max-w-4xl mx-auto mt-10 mb-20 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
 
-        {/* Selected Careers */}
         <h2 className="text-xl font-semibold mb-3">Selected Careers</h2>
         <div className="flex flex-wrap gap-3 mb-6">
           {careers.map((c: string, i: number) => (
@@ -78,7 +74,6 @@ export default function ViewReportPage() {
           ))}
         </div>
 
-        {/* PDF Button */}
         <div className="flex gap-4 mb-6">
           <button
             onClick={() =>
@@ -99,7 +94,6 @@ export default function ViewReportPage() {
           </Link>
         </div>
 
-        {/* Report Body */}
         <div className="prose prose-invert max-w-none leading-relaxed text-[15px]">
           <ReactMarkdown>{report}</ReactMarkdown>
         </div>
