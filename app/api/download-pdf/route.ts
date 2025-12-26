@@ -21,13 +21,11 @@ export async function GET(req: Request) {
     const report = snap.data().report;
     const careers = snap.data().careers || [];
 
-    // Create PDF
     const pdf = new jsPDF({
       unit: "pt",
       format: "a4",
     });
 
-    // PREMIUM HEADER
     pdf.setFillColor(60, 20, 140);
     pdf.rect(0, 0, 595, 80, "F");
 
@@ -35,7 +33,7 @@ export async function GET(req: Request) {
     pdf.setTextColor(255, 255, 255);
     pdf.text("CareerAI - Detailed Career Report", 30, 50);
 
-    // SELECTED CAREERS SECTION 
+ 
     pdf.setFontSize(15);
     pdf.setTextColor(80, 80, 160);
 
@@ -50,7 +48,7 @@ export async function GET(req: Request) {
 
     y += 40;
 
-    //  PREMIUM FORMATTED BODY 
+
     pdf.setFont("Helvetica", "normal");
     pdf.setFontSize(12);
     pdf.setTextColor(40, 40, 40);
@@ -59,17 +57,16 @@ export async function GET(req: Request) {
     const margin = 40;
     const maxWidth = pageWidth - margin * 2;
 
-    // Split report into paragraphs
+    
     const paragraphs = report.split("\n\n");
 
     paragraphs.forEach((para: string) => {
       if (!para.trim()) return;
 
-      // Check for heading 
+
       if (para.startsWith("##") || para.startsWith("**")) {
         let title = para.replace(/[#*]/g, "").trim();
 
-        // Add new page if space ends
         if (y > 760) {
           pdf.addPage();
           y = 60;
@@ -88,7 +85,6 @@ export async function GET(req: Request) {
         return;
       }
 
-      // Normal paragraph
       const lines = pdf.splitTextToSize(para, maxWidth);
 
       lines.forEach((line: string) => {
@@ -97,13 +93,13 @@ export async function GET(req: Request) {
           y = 60;
         }
         pdf.text(line, margin, y);
-        y += 18; // PERFECT balanced line spacing
+        y += 18; 
       });
 
-      y += 10; // paragraph spacing
+      y += 10; 
     });
 
-    // Return PDF
+   
     const pdfBuffer = pdf.output("arraybuffer");
 
     return new NextResponse(pdfBuffer, {
