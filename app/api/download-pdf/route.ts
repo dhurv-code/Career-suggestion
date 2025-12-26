@@ -27,7 +27,7 @@ export async function GET(req: Request) {
       format: "a4",
     });
 
-    // ==== PREMIUM HEADER ====
+    // PREMIUM HEADER
     pdf.setFillColor(60, 20, 140);
     pdf.rect(0, 0, 595, 80, "F");
 
@@ -35,7 +35,7 @@ export async function GET(req: Request) {
     pdf.setTextColor(255, 255, 255);
     pdf.text("CareerAI - Detailed Career Report", 30, 50);
 
-    // ==== SELECTED CAREERS SECTION ====
+    // SELECTED CAREERS SECTION 
     pdf.setFontSize(15);
     pdf.setTextColor(80, 80, 160);
 
@@ -50,7 +50,7 @@ export async function GET(req: Request) {
 
     y += 40;
 
-    // === PREMIUM FORMATTED BODY ===
+    //  PREMIUM FORMATTED BODY 
     pdf.setFont("Helvetica", "normal");
     pdf.setFontSize(12);
     pdf.setTextColor(40, 40, 40);
@@ -65,7 +65,7 @@ export async function GET(req: Request) {
     paragraphs.forEach((para: string) => {
       if (!para.trim()) return;
 
-      // Check for heading (Markdown style)
+      // Check for heading 
       if (para.startsWith("##") || para.startsWith("**")) {
         let title = para.replace(/[#*]/g, "").trim();
 
