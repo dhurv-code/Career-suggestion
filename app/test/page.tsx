@@ -1,7 +1,7 @@
 "use client";
 
 import AuthGuard from "../components/AuthGuard";
-import NeonBackground from "../components/NeonBackground"; // adjust if your NeonBackground path differs
+import NeonBackground from "../components/NeonBackground";
 import { useState } from "react";
 import { auth, db } from "../../firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
@@ -9,11 +9,9 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 type Answers = Record<string, number | string[] | string | null>;
 
 export default function CareerTestPage() {
-  // UI state
+  
   const [results, setResults] = useState<{ career: string; score: number }[] | null>(null);
   const [saving, setSaving] = useState(false);
-
-  // 25 master career clusters
   const allCareers = [
     "Software Engineering",
     "Data & AI",
@@ -41,8 +39,6 @@ export default function CareerTestPage() {
     "Real Estate & Property",
     "Freelancing / Online Career",
   ];
-
-  // Medium test -> sliders (short, meaningful)
   const sliderGroups: [string, string[]][] = [
     ["Core Interests", [
       "problem_solving|Problem Solving",
@@ -73,8 +69,6 @@ export default function CareerTestPage() {
       "media_interest|Interest in Media / Communication",
     ]],
   ];
-
-  // default slider values map
   const defaultValues: Record<string, number> = {
     problem_solving: 3,
     creativity: 3,
@@ -97,16 +91,10 @@ export default function CareerTestPage() {
     finance_interest: 1,
     media_interest: 1,
   };
-
-  // ---------------- SCORING FUNCTION ----------------
   function scoreCareers(answers: any) {
     const a = answers as Record<string, number | string[]>;
     const s: Record<string, number> = {};
-
-    // Helper to get value safely
     const v = (k: string) => Number(a[k] ?? 0);
-
-    // Build formulas (weighted sums). Tweak weights if you prefer different emphasis.
     s["Software Engineering"] =
       2 * v("technical_interest") + 1.5 * v("problem_solving") + 0.8 * v("math_comfort") + v("discipline");
 
@@ -182,31 +170,22 @@ export default function CareerTestPage() {
     s["Freelancing / Online Career"] =
       2 * v("freedom_pref") + 1.2 * Math.max(v("technical_interest"), v("design_aptitude"), v("media_interest")) + v("entrepreneurial_drive");
 
-    // Normalize / ensure scores exist for all careers
     for (const c of allCareers) {
       if (typeof s[c] === "undefined") s[c] = 0;
     }
-
-    // If the user selected specific careers, prefer those - but still score all
-    // Return top-ranked list sorted by score desc
     return Object.entries(s)
       .map(([career, score]) => ({ career, score: Number(score.toFixed(2)) }))
       .sort((a, b) => b.score - a.score);
   }
-
-  // ---------------- HANDLE SUBMIT ----------------
   async function handleSubmit(e: any) {
     e.preventDefault();
     const form = new FormData(e.target);
 
-    // gather slider answers
     const answers: any = {};
     Object.keys(defaultValues).forEach((k) => {
       answers[k] = Number(form.get(k) ?? defaultValues[k]);
     });
 
-    // also include specialized fields from sliderGroups and other fields
-    // if a slider exists in DOM but not in defaults, collect it
     ["problem_solving", "creativity", "people_skill", "leadership", "discipline", "entrepreneurial_drive",
       "math_comfort", "technical_interest", "design_aptitude", "mechanical_aptitude", "physical_fitness",
       "job_security_pref", "freedom_pref", "helping_nature", "rule_preference", "stress_tolerance",
@@ -215,19 +194,15 @@ export default function CareerTestPage() {
       if (!(k in answers)) answers[k] = Number(form.get(k) ?? 3);
     });
 
-    // selected careers
     const selected_careers = form.getAll("selected_careers") as string[];
     answers.selected_careers = selected_careers;
 
-    // optional notes / priorities
     answers.notes = String(form.get("notes") || "");
     answers.priorities = form.getAll("priorities");
 
-    // score
     const ranked = scoreCareers(answers);
     setResults(ranked);
 
-    // save to firestore (if logged in)
     if (auth.currentUser) {
       try {
         setSaving(true);
@@ -247,7 +222,6 @@ export default function CareerTestPage() {
     }
   }
 
-  // ---------- UI ----------
   return (
     <AuthGuard>
       <NeonBackground>
@@ -276,7 +250,6 @@ export default function CareerTestPage() {
               </section>
             ))}
 
-            {/* Careers checkboxes */}
             <section>
               <h2 className="text-lg font-semibold mb-3">Which career clusters interest you? (choose 2+)</h2>
               <div className="grid md:grid-cols-2 gap-2 text-sm">
@@ -289,7 +262,6 @@ export default function CareerTestPage() {
               </div>
             </section>
 
-            {/* Notes & priorities */}
             <section>
               <h2 className="text-lg font-semibold mb-3">Notes / Priorities (optional)</h2>
               <textarea name="notes" placeholder="Any preferences or constraints (location, salary, study plans)?" className="w-full bg-[#04040a] border border-slate-800 p-3 rounded-md text-sm text-slate-200" rows={3} />
@@ -306,7 +278,6 @@ export default function CareerTestPage() {
             </div>
           </form>
 
-          {/* Results */}
           {results && (
             <div className="max-w-4xl mx-auto mt-8 bg-[rgba(255,255,255,0.03)] border border-[#2b2740] p-6 rounded-2xl">
 
@@ -320,7 +291,7 @@ export default function CareerTestPage() {
                 </div>
               ))}
 
-              {/* Determine only top relevant career(s) to send to report */}
+             
               <a
                 href={`/report?careers=${encodeURIComponent(JSON.stringify(
                   results.slice(0, 3).map((x) => x.career)
