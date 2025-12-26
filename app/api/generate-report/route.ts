@@ -1,4 +1,4 @@
-// app/api/generate-report/route.ts
+
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -19,9 +19,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "API key missing" }, { status: 500 });
     }
 
-    // ------------------------------------------------------
-    // 🔥 **STRICT MULTI-CAREER SYSTEM PROMPT**
-    // ------------------------------------------------------
+
+    
     const systemPrompt = `
 You are an expert career counselor with 20+ years experience.
 Your job is to create a premium, paid-quality multi-career report with crystal-clear formatting.
@@ -35,8 +34,6 @@ STRICT RULES (FOLLOW EXACTLY):
 ## **{Career Name}**
 
 4. After the entire section of each career, add a clean separator line:
-
----
 
 5. EACH CAREER MUST FOLLOW THIS EXACT STRUCTURE:
 
@@ -103,9 +100,6 @@ OUTPUT MUST BE EXTREMELY PREMIUM AND CLEAR.
 `.trim();
 
 
-    // ------------------------------------------------------
-    // 🔥 **DYNAMIC USER PROMPT**
-    // ------------------------------------------------------
     const userPrompt = `
 Generate a complete premium multi-career report for the following careers:
 
@@ -117,11 +111,6 @@ Follow the exact structure, headings, and separators described in the system ins
 Do NOT skip any career.  
 Output ONLY markdown without backticks.
 `.trim();
-
-
-    // ------------------------------------------------------
-    // 🔥 CALL GROQ API
-    // ------------------------------------------------------
     const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
