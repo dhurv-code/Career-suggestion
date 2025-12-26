@@ -15,9 +15,7 @@ export default function DetailedReportPage() {
 
   const reportRef = useRef(null);
 
-  // -------------------------------------------------------
-  // GET CAREERS FROM QUERY STRING (COMING FROM TEST PAGE)
-  // -------------------------------------------------------
+ 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -34,9 +32,7 @@ export default function DetailedReportPage() {
     }
   }, []);
 
-  // -------------------------------------------------------
-  // GENERATE REPORT (NOW WITH CAREERS)
-  // -------------------------------------------------------
+
   async function generateReport() {
     if (selectedCareers.length === 0) {
       alert("No careers received. Please go back and take the test again.");
@@ -51,7 +47,7 @@ export default function DetailedReportPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          careers: selectedCareers, // IMPORTANT 🔥
+          careers: selectedCareers, 
           context: "user test results",
         }),
       });
@@ -66,9 +62,7 @@ export default function DetailedReportPage() {
 
       setReport(data.content);
 
-      // ========================================
-      // SAVE REPORT TO FIRESTORE
-      // ========================================
+
       const user = auth.currentUser;
 
       if (user) {
@@ -94,9 +88,7 @@ export default function DetailedReportPage() {
     setLoading(false);
   }
 
-  // -------------------------------------------------------
-  // DOWNLOAD PDF
-  // -------------------------------------------------------
+  
   async function downloadPDF() {
     const element = document.getElementById("report-content");
     if (!element) return;
@@ -112,9 +104,7 @@ export default function DetailedReportPage() {
     html2pdf().from(element).set(opt).save();
   }
 
-  // -------------------------------------------------------
-  // UI
-  // -------------------------------------------------------
+ 
   return (
     <AuthGuard>
       <main className="min-h-screen bg-[#020617] text-white p-6">
